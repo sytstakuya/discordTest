@@ -6,7 +6,6 @@ load_dotenv()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 CHANNEL_ID = 1103731669275525313
-# CHANNEL_ID = os.getenv('CHANNEL_ID')
 
 intents = discord.Intents.default()
 intents.members = True
@@ -19,8 +18,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.content == '/hi':
-    # if message.content == '/hi' and message.channel.id == CHANNEL_ID:
+    print(f"Message received: {message.content}, Channel: {message.channel.id}")
+    if message.content == '/hi' and message.channel.id == CHANNEL_ID:
         await message.add_reaction('🙌')
 
 client.run(TOKEN)
