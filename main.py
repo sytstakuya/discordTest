@@ -25,6 +25,6 @@ async def on_message(message):
     print(f"Message received: {message.content}, Channel: {message.channel.id}")
     if message.channel.id == CHANNEL_ID:
     # if message.content == '/自己紹介' and message.channel.id == CHANNEL_ID:
-    await message.add_reaction('🙌')
+        await message.add_reaction('🙌')
 
 client.run(TOKEN)
