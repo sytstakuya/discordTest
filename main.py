@@ -1,30 +1,39 @@
-import logging
-logging.basicConfig(level=logging.INFO)
-
 import os
 import discord
-from dotenv import load_dotenv
-
 
 load_dotenv()
-
-TOKEN = os.getenv('DISCORD_TOKEN')
-CHANNEL_ID = 1103731669275525313
 
 intents = discord.Intents.default()
 intents.members = True
 
 client = discord.Client(intents=intents)
 
-@client.event
-async def on_ready():
-    print(f'{client.user.name} has connected to Discord!')
+TARGET_CHANNELS = [int(os.getenv("CHANNEL_ID_1")), int(os.getenv("CHANNEL_ID_2"))]
 
 @client.event
 async def on_message(message):
-    print(f"Message received: {message.content}, Channel: {message.channel.id}")
-    if message.channel.id == CHANNEL_ID:
-    # if message.content == '/自己紹介' and message.channel.id == CHANNEL_ID:
-        await message.add_reaction('🙌')
+    if message.content == "/自己紹介":
+        channel = message.channel
+        author = message.author
+        
+        for channel_id in TARGET_CHANNELS:
+            target_channel = client.get_channel(channel_id)
+            messages = await target_channel.history(limit=500).flatten()
+            for msg in messages:
+                if msg.author == author:
+                    await channel.send(f"{author.mention} さんの自己紹介です！\n{msg.content}")
+                    return
+        
+        # 見つからなかった場合、最大500件まで過去の投稿を検索する
+        for channel_id in TARGET_CHANNELS:
+            target_channel = client.get_channel(channel_id)
+            messages = await target_channel.history(limit=500).flatten()
+            for msg in messages:
+                if msg.author == author:
+                    await channel.send(f"{author.mention} さんの自己紹介です！\n{msg.content}")
+                    return
+        
+        # どちらも見つからなかった場合
+        await channel.send(f"{author.mention} さんの自己紹介は見つかりませんでした...")
 
-client.run(TOKEN)
+client.run(os.getenv("DISCORD_TOKEN"))
