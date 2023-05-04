@@ -9,7 +9,7 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 
-TARGET_CHANNELS = [int(os.getenv("CHANNEL_ID_1")), int(os.getenv("CHANNEL_ID_2"))]
+# TARGET_CHANNELS = [int(os.getenv("CHANNEL_ID_1")), int(os.getenv("CHANNEL_ID_2"))]
 
 @client.event
 async def on_message(message):
@@ -18,8 +18,8 @@ async def on_message(message):
 
     if message.content == "/自己紹介":
         # 環境変数からチャンネルIDを取得
-        channel1_id = int(os.environ.get("CHANNEL1_ID"))
-        channel2_id = int(os.environ.get("CHANNEL2_ID"))
+        channel1_id = int(os.environ.get("CHANNEL_ID_1"))
+        channel2_id = int(os.environ.get("CHANNEL_ID_2"))
         
         # メッセージを投稿したチャンネルの取得
         channel = message.channel
