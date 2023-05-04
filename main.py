@@ -13,28 +13,33 @@ TARGET_CHANNELS = [int(os.getenv("CHANNEL_ID_1")), int(os.getenv("CHANNEL_ID_2")
 
 @client.event
 async def on_message(message):
+    if message.author.bot:
+        return
+
     if message.content == "/自己紹介":
+        # 環境変数からチャンネルIDを取得
+        channel1_id = int(os.environ.get("CHANNEL1_ID"))
+        channel2_id = int(os.environ.get("CHANNEL2_ID"))
+        
+        # メッセージを投稿したチャンネルの取得
         channel = message.channel
-        author = message.author
         
-        for channel_id in TARGET_CHANNELS:
-            target_channel = client.get_channel(channel_id)
-            messages = await target_channel.history(limit=500).flatten()
-            for msg in messages:
-                if msg.author == author:
-                    await channel.send(f"{author.mention} さんの自己紹介です！\n{msg.content}")
+        # 指定された2つのチャンネルから投稿を検索する
+        for target_channel_id in [channel1_id, channel2_id]:
+            target_channel = client.get_channel(target_channel_id)
+            async for msg in target_channel.history(limit=500):
+                if msg.author == message.author:
+                    # 投稿が見つかった場合、再投稿する
+                    await channel.send(f"{msg.content} (by {msg.author.name})")
                     return
         
-        # 見つからなかった場合、最大500件まで過去の投稿を検索する
-        for channel_id in TARGET_CHANNELS:
-            target_channel = client.get_channel(channel_id)
-            messages = await target_channel.history(limit=500).flatten()
-            for msg in messages:
-                if msg.author == author:
-                    await channel.send(f"{author.mention} さんの自己紹介です！\n{msg.content}")
-                    return
-        
-        # どちらも見つからなかった場合
-        await channel.send(f"{author.mention} さんの自己紹介は見つかりませんでした...")
+        # 投稿が見つからなかった場合、過去の投稿を検索する
+        async for msg in channel.history(limit=500):
+            if msg.author == message.author:
+                await channel.send(f"{msg.content} (by {msg.author.name})")
+                return
+
+        # メッセージが見つからなかった場合
+        await channel.send("自己紹介が見つかりませんでした")
 
 client.run(os.getenv("DISCORD_TOKEN"))
