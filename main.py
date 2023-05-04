@@ -5,7 +5,10 @@ from dotenv import load_dotenv
 load_dotenv()  # .envファイルから環境変数を読み込む
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+
+client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
