@@ -21,12 +21,12 @@ async def on_message(message):
 
     # 発火条件(/自己紹介と投稿されたとき)
     if message.content == '/自己紹介':
+        # メッセージを投稿したチャンネルの取得
+        channel = message.channel
 
         # サーバーからロールを取得
         male_role = discord.utils.get(message.guild.roles, name='男性')
         female_role = discord.utils.get(message.guild.roles, name='女性')
-
-        channel_id = ''
 
         # 実行者が「男性」もしくは「女性」ロールを持っているか確認
         if male_role in message.author.roles:
