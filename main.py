@@ -16,7 +16,7 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    if true:
+    if True:
     # if message.content == "/自己紹介":
         # 環境変数からチャンネルIDを取得
         channel1_id = int(os.environ.get("CHANNEL_ID_1"))
