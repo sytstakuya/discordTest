@@ -20,7 +20,7 @@ async def on_message(message):
         return
 
     # 発火条件(/自己紹介と投稿されたとき)
-    if message.content == '/自己紹介':
+    if message.content == '/hogehoge':
         # メッセージを投稿したチャンネルの取得
         channel = message.channel
 
