@@ -26,7 +26,7 @@ async def on_message(message):
 
         # サーバーからロールを取得
         male_role = discord.utils.get(message.guild.roles, name='男性')
-        female_role = discord.utils.get(message.guild.roles, name='男性')
+        female_role = discord.utils.get(message.guild.roles, name='女性')
 
         channel_id = ''
 
