@@ -12,7 +12,12 @@ client = discord.Client(intents=intents)
 # TARGET_CHANNELS = [int(os.getenv("CHANNEL_ID_1")), int(os.getenv("CHANNEL_ID_2"))]
 
 @client.event
+async def on_ready():
+    print(f'We have logged in as {client.user}')
+
+@client.event
 async def on_message(message):
+    print(f'message {message}')
     if message.author.bot:
         return
 
